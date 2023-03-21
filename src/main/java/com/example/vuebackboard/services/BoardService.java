@@ -2,6 +2,8 @@ package com.example.vuebackboard.services;
 
 import com.example.vuebackboard.entity.BoardEntity;
 import com.example.vuebackboard.entity.BoardRepository;
+import com.example.vuebackboard.entity.BoardRepositoryCustom;
+import com.example.vuebackboard.model.SearchCondition;
 import com.example.vuebackboard.web.dtos.BoardDto;
 import com.example.vuebackboard.model.Header;
 import com.example.vuebackboard.model.Pagination;
@@ -22,14 +24,16 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final BoardRepositoryCustom boardRepositoryCustom;
 
     /**
      * 게시글 목록 가져오기
+     * @return
      */
-    public Header<List<BoardDto>> getBoardList(Pageable pageable) {
+    public Header<List<BoardDto>> getBoardList(Pageable pageable, SearchCondition searchCondition) {
         List<BoardDto> dtos = new ArrayList<>();
 
-        Page<BoardEntity> boardEntities = boardRepository.findAllByOrderByIdxDesc(pageable);
+        Page<BoardEntity> boardEntities = boardRepositoryCustom.findAllBySearchCondition(pageable, searchCondition);
         for (BoardEntity entity : boardEntities) {
             BoardDto dto = BoardDto.builder()
                     .idx(entity.getIdx())
