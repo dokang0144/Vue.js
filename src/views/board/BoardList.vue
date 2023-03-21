@@ -1,4 +1,4 @@
-<template>
+<template xmlns:white-space="http://www.w3.org/1999/xhtml">
   <div class="board-list">
     <div class="common-buttons">
       <button type="button" class="w3-button w3-round w3-blue-gray" v-on:click="fnWrite">등록</button>
@@ -41,16 +41,16 @@
     </div>
 
     <div>
-      <select v-model="search_key">
+      <select v-model="search_key" id="selectForm" class="w3-select">
         <option value="">- 선택 -</option>
         <option value="author">작성자</option>
         <option value="title">제목</option>
         <option value="contents">내용</option>
       </select>
       &nbsp;
-      <input type="text" v-model="search_value" @keyup.enter="fnPage()">
+      <input id="textForm" type="text" v-model="search_value" @keyup.enter="fnPage()">
       &nbsp;
-      <button @click="fnPage()">검색</button>
+      <button @click="fnPage()" class="w3-button">검색</button>
     </div>
   </div>
 </template>
@@ -139,3 +139,20 @@ export default {
   }
 }
 </script>
+
+<style>
+#selectForm {
+  width: 100px;
+  margin: auto;
+}
+
+#textForm {
+  height: 38px;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom-color: #2c3e50;
+  border-bottom-width: 1px;
+}
+
+</style>
