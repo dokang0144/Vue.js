@@ -21,7 +21,7 @@
       </tr>
       </tbody>
     </table>
-    <div class="pagination w3-bar w3-padding-16 w3-small" v-if="paging.total_list_cnt > 0">
+    <div class="pagination w3-padding-16 w3-small" v-if="paging.total_list_cnt > 0">
       <span class="pg">
       <a href="javascript:;" @click="fnPage(1)" class="first w3-button w3-bar-item w3-border">&lt;&lt;</a>
       <a href="javascript:;" v-if="paging.start_page > 10" @click="fnPage(`${paging.start_page-1}`)"
@@ -78,6 +78,7 @@ export default {
     this.fnGetList()
   },
   methods: {
+
     fnGetList() {
       this.requestBody = { // 데이터 전송
         keyword: this.keyword,
@@ -90,7 +91,11 @@ export default {
         headers: {}
       }).then((res) => {
 
-        this.list = res.data  //서버에서 데이터를 목록으로 보내므로 바로 할당하여 사용할 수 있다.
+        if (res.data.result_code === "OK") {
+          this.list = res.data.data
+          this.paging = res.data.pagination
+          this.no = this.paging.total_list_cnt - ((this.paging.page - 1) * this.paging.page_size)
+        }
 
       }).catch((err) => {
         if (err.message.indexOf('Network Error') > -1) {
