@@ -1,10 +1,5 @@
 <template>
   <div className="board-detail">
-    <div className="common-buttons">
-      <button type="button" className="w3-button w3-round w3-blue-gray" v-on:click="fnUpdate">수정</button>&nbsp;
-      <button type="button" className="w3-button w3-round w3-red" v-on:click="fnDelete">삭제</button>&nbsp;
-      <button type="button" className="w3-button w3-round w3-gray" v-on:click="fnList">목록</button>
-    </div>
     <div className="board-contents">
       <h3>{{ title }}</h3>
       <div>
@@ -21,11 +16,15 @@
       <button type="button" className="w3-button w3-round w3-red" v-on:click="fnDelete">삭제</button>&nbsp;
       <button type="button" className="w3-button w3-round w3-gray" v-on:click="fnList">목록</button>
     </div>
+    <board-comment></board-comment>
   </div>
 </template>
 
 <script>
+import BoardComment from "@/views/board/BoardComment.vue";
+
 export default {
+  components: {BoardComment},
   data() { //변수생성
     return {
       requestBody: this.$route.query,
