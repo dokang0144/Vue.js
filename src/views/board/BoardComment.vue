@@ -1,12 +1,11 @@
 <template>
   <div class="board-list">
     <div style="border-bottom: 2px solid #92D050; height: 50px;">
-      <p style="float:left; padding: 0 10px 0">전체 댓글 <a style="color: dodgerblue;">3</a>개</p>
+      <p style="float:left; padding: 0 10px 0">전체 댓글 <a style="color: dodgerblue;">0</a>개</p>
     </div>
 
-    <ul class="w3-ul" v-for="row in list" :key="row">
-      {{ list }}
-      <li style="border-bottom: 1px solid #D9D9D9"><div style="float: left; width: 150px;">{{ row.userId }}</div><div>{{ row.author }}</div></li>
+    <ul class="w3-ul" v-for="(row, idx) in clist" :key="idx"> {{ clist }}
+      <li style="border-bottom: 1px solid #D9D9D9"><div style="float: left; width: 150px;">{{ row.user_name }}</div><div>{{ row.com }}</div></li>
     </ul><br>
     <div style="text-align: center; border: solid 2px #E9E5E1; width: 700px; padding: 10px; margin: auto">
       <input type="text" style="width: 550px; height: 40px; outline: none; border: 0 solid black" placeholder="댓글을 남겨주세요.">&nbsp;
@@ -16,21 +15,42 @@
 </template>
 
 <script>
+
 export default {
   data() { //변수생성
     return {
-      list: {} //리스트 데이터
+      requestBody: this.$route.query,
+      idx: this.$route.query.idx,
+
+      clist: {}
     }
   },
   mounted() {
-    this.fnGetList()
+    this.fnGetView()
   },
   methods: {
-    fnGetList() {
-
-      this.$axios.get(this.$serverUrl + "/board/list", {
+    fnGetView() {
+      this.$axios.get(this.$serverUrl + '/comment/' + this.idx, {
+        params: this.requestBody
       }).then((res) => {
-          this.list = res.data.data
+        this.user_name = res.data.data
+      })
+    },
+    fnUpdate() {
+      this.$router.push({
+        path: './write',
+        query: this.requestBody
+      })
+    },
+    fnDelete() {
+      if (!confirm("삭제하시겠습니까?")) return
+
+      this.$axios.delete(this.$serverUrl + '/comment/' + this.idx, {})
+          .then(() => {
+            alert('삭제되었습니다.')
+            this.fnList();
+          }).catch((err) => {
+        console.log(err);
       })
     }
   }

@@ -12,8 +12,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 public class CommentDto implements Serializable {
-    private Long cIdx;
     private Long idx;
-    private String userId;
-    private String comment;
+    private String userName;
+    private String com;
+    private Long board;
 }

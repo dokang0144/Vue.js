@@ -21,9 +21,7 @@ public class CommentController {
     public List<CommentDto> commentList() { return commentService.getCommentList(); }
 
     @GetMapping("/comment/{id}")
-    public CommentDto getComment(@PathVariable Long id) {
-        return commentService.getComment(id);
-    }
+    public CommentDto getComment(@PathVariable Long id) { return commentService.getComment(id); }
 
     @PostMapping("/comment")
     public CommentEntity create(@RequestBody CommentDto commentDto) {

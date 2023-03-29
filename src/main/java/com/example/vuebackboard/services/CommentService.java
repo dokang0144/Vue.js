@@ -27,9 +27,9 @@ public class CommentService {
         for (CommentEntity entity : commentEntities) {
             CommentDto dto = CommentDto.builder()
                     .idx(entity.getIdx())
-                    .cIdx(entity.getCIdx())
-                    .userId(entity.getUserId())
-                    .comment(entity.getComment())
+                    .userName(entity.getUserName())
+                    .com(entity.getCom())
+                    .board(entity.getBoard())
                     .build();
 
             dtos.add(dto);
@@ -45,9 +45,9 @@ public class CommentService {
         CommentEntity entity = commentRepository.findById(id).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
         return CommentDto.builder()
                 .idx(entity.getIdx())
-                .cIdx(entity.getCIdx())
-                .userId(entity.getUserId())
-                .comment(entity.getComment())
+                .userName(entity.getUserName())
+                .com(entity.getCom())
+                .board(entity.getBoard())
                 .build();
     }
 
@@ -57,8 +57,9 @@ public class CommentService {
     public CommentEntity create(CommentDto commentDto) {
         CommentEntity entity = CommentEntity.builder()
                 .idx(commentDto.getIdx())
-                .userId(commentDto.getUserId())
-                .comment(commentDto.getComment())
+                .userName(commentDto.getUserName())
+                .com(commentDto.getCom())
+                .board(commentDto.getBoard())
                 .build();
         return commentRepository.save(entity);
     }

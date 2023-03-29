@@ -16,8 +16,10 @@ import javax.persistence.*;
 public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cIdx;
     private Long idx;
-    private String userId;
-    private String comment;
+    private String userName;
+
+    private String com;
+
+    private Long board;
 }

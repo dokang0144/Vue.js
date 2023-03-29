@@ -19,13 +19,11 @@ public class QCommentEntity extends EntityPathBase<CommentEntity> {
 
     public static final QCommentEntity commentEntity = new QCommentEntity("commentEntity");
 
-    public final NumberPath<Long> cIdx = createNumber("cIdx", Long.class);
-
-    public final StringPath comment = createString("comment");
+    public final StringPath com = createString("com");
 
     public final NumberPath<Long> idx = createNumber("idx", Long.class);
 
-    public final StringPath userId = createString("userId");
+    public final StringPath userName = createString("userName");
 
     public QCommentEntity(String variable) {
         super(CommentEntity.class, forVariable(variable));
