@@ -18,8 +18,6 @@ public class CommentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
     private String userName;
-
-    private String com;
-
+    private String comment;
     private Long board;
 }

@@ -19,7 +19,9 @@ public class QCommentEntity extends EntityPathBase<CommentEntity> {
 
     public static final QCommentEntity commentEntity = new QCommentEntity("commentEntity");
 
-    public final StringPath com = createString("com");
+    public final NumberPath<Long> board = createNumber("board", Long.class);
+
+    public final StringPath comment = createString("comment");
 
     public final NumberPath<Long> idx = createNumber("idx", Long.class);
 

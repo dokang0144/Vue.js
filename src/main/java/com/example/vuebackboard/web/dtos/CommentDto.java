@@ -14,6 +14,6 @@ import java.io.Serializable;
 public class CommentDto implements Serializable {
     private Long idx;
     private String userName;
-    private String com;
+    private String comment;
     private Long board;
 }

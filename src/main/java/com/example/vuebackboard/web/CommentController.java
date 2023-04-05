@@ -5,7 +5,6 @@ import com.example.vuebackboard.services.CommentService;
 import com.example.vuebackboard.web.dtos.CommentDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +20,9 @@ public class CommentController {
     public List<CommentDto> commentList() { return commentService.getCommentList(); }
 
     @GetMapping("/comment/{id}")
-    public CommentDto getComment(@PathVariable Long id) { return commentService.getComment(id); }
+    public CommentDto getComment(@PathVariable Long id) {
+        return commentService.getComment(id);
+    }
 
     @PostMapping("/comment")
     public CommentEntity create(@RequestBody CommentDto commentDto) {

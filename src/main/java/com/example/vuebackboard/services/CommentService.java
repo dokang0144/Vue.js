@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -28,7 +29,7 @@ public class CommentService {
             CommentDto dto = CommentDto.builder()
                     .idx(entity.getIdx())
                     .userName(entity.getUserName())
-                    .com(entity.getCom())
+                    .comment(entity.getComment())
                     .board(entity.getBoard())
                     .build();
 
@@ -46,7 +47,7 @@ public class CommentService {
         return CommentDto.builder()
                 .idx(entity.getIdx())
                 .userName(entity.getUserName())
-                .com(entity.getCom())
+                .comment(entity.getComment())
                 .board(entity.getBoard())
                 .build();
     }
@@ -56,14 +57,12 @@ public class CommentService {
      */
     public CommentEntity create(CommentDto commentDto) {
         CommentEntity entity = CommentEntity.builder()
-                .idx(commentDto.getIdx())
                 .userName(commentDto.getUserName())
-                .com(commentDto.getCom())
+                .comment(commentDto.getComment())
                 .board(commentDto.getBoard())
                 .build();
         return commentRepository.save(entity);
     }
-
 
     /**
      * 게시글 삭제
