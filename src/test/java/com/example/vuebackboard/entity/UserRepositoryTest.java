@@ -25,9 +25,9 @@ class UserRepositoryTest {
     void test_1(){
         String encPassword = passwordEncoder.encode("test_password");
         UserEntity userEntity = UserEntity.builder()
-                .userId("test_user")
+                .userId("111")
                 .userPw(encPassword)
-                .userName("테스트유저")
+                .userName("111")
                 .build();
 
         UserEntity savedUser = userRepository.save(userEntity);

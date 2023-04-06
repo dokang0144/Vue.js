@@ -3,9 +3,12 @@
     <div>
       <h2>Please Sign Up</h2>
       <div id="loginForm">
-        <form @submit.prevent="fnLogin">
+        <form @submit.prevent="fnSign">
           <p>
-            <input class="w3-input" name="uid" placeholder="Enter your ID" v-model="user_id"><br>
+            <input class="w3-input" placeholder="Enter your Name" v-model="user_name"><br>
+          </p>
+          <p>
+            <input class="w3-input" placeholder="Enter your ID" v-model="user_id"><br>
           </p>
           <p>
             <input name="password" class="w3-input" placeholder="Enter your password" v-model="user_pw" type="password">
@@ -22,15 +25,23 @@
 
 <script>
 
+import axios from "axios";
+
 export default {
   data() {
     return {
       user_id: '',
-      user_pw: ''
+      user_pw: '',
+      user_name: ''
     }
   },
   methods: {
-    fnLogin() {
+    async fnSign() {
+      if (this.user_name === '') {
+        alert('이름를 입력하세요.')
+        return
+      }
+
       if (this.user_id === '') {
         alert('ID를 입력하세요.')
         return
@@ -41,7 +52,25 @@ export default {
         return
       }
 
-      alert('회원가입이 완료 되었습니다.')
+      const requestData = {
+        name: this.user_name,
+        id: this.user_id,
+        password: this.user_pw
+      }
+
+      try {
+        await axios.post('/api/signup', requestData)
+        alert('회원가입이 완료되었습니다.')
+        this.goToPages()
+      } catch (error) {
+        console.error(error)
+        alert('회원가입 중 오류가 발생하였습니다.')
+      }
+    },
+    goToPages() {
+      this.$router.push({
+        name: 'Login'
+      })
     }
   }
 }

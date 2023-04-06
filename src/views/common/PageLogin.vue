@@ -13,7 +13,7 @@
           <p>
             <button type="submit" class="w3-button w3-green w3-round">Login</button>
           </p>
-          <p>계정이 필요한가요? <b><router-link to="/signup" style="color: #42b983">가입하기</router-link></b></p>
+          <p>계정이 필요한가요? <a href="http://10.1.10.226:3000/" style="color: #42b983"><b>가입하기</b></a></p>
         </form>
       </div>
     </div>

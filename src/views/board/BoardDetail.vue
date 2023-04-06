@@ -8,8 +8,8 @@
         <span>{{ created_at }}</span>
       </div>
     </div>
-    <div className="board-contents">
-      <span>{{ contents }}</span>
+    <div class="board-contents">
+      <span v-html="contents.replace(/\n/g, '<br>')"></span>
     </div>
     <div className="common-buttons">
       <button type="button" className="w3-button w3-round w3-blue-gray" v-on:click="fnUpdate">수정</button>&nbsp;
