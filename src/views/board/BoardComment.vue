@@ -14,11 +14,14 @@
   </div>
 
   <div style="text-align: center; border: solid 2px #E9E5E1; width: 700px; padding: 10px; margin: auto">
-    <input ref="commentInput" v-model="comment" placeholder="댓글을 남겨주세요."
-           style="width: 550px; height: 40px; outline: none; border: 0 solid black"
-           type="text">&nbsp;
-    <button className="w3-button w3-green" style="height: 40px" type="button" v-on:click="fnSave">댓글쓰기</button>
+    <form v-on:submit.prevent="fnSave">
+      <input ref="commentInput" v-model="comment" placeholder="댓글을 남겨주세요."
+             style="width: 550px; height: 40px; outline: none; border: 0 solid black"
+             type="text">&nbsp;
+      <button className="w3-button w3-green" style="height: 40px" type="submit">댓글쓰기</button>
+    </form>
   </div>
+
 </template>
 
 <script>
@@ -71,6 +74,11 @@ export default {
         "user_name": this.user_name,
         "comment": this.comment,
         "board": this.idx
+      }
+
+      if (!this.user_name) {
+        alert('이름을 입력해주세요.')
+        return
       }
 
       //INSERT

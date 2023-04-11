@@ -38,4 +38,13 @@ export default {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+@font-face {
+  font-family: 'NanumSquareR';
+  src: url('@/assets/fonts/NanumSquareR.ttf') format('truetype');
+}
+
+#app {
+  font-family: NanumSquareR, sans-serif;
+}
 </style>

@@ -23,6 +23,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenRequestFilter tokenRequestFilter;
 
     @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
