@@ -4,7 +4,7 @@ import List from "@/views/board/BoardList.vue"
 import Detail from "@/views/board/BoardDetail.vue"
 import Write from "@/views/board/BoardWrite.vue"
 import Login from "@/views/common/PageLogin.vue"
-import SighUp from "@/views/common/PageSighUp.vue"
+import SighUp from "@/views/common/PageSignUp.vue"
 import store from "@/vuex/store";
 
 const requireAuth = () => (from, to, next) => {

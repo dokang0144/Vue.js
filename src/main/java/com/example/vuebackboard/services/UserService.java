@@ -36,5 +36,4 @@ public class UserService implements UserDetailsService {
 
         return new User(userEntity.getUserId(), userEntity.getUserPw(), authorities);
     }
-
 }

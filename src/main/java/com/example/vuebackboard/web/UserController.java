@@ -34,7 +34,7 @@ public class UserController {
 
 
     private final JwtUtil jwtUtil;
-    @Autowired
+
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
 
@@ -61,5 +61,4 @@ public class UserController {
 
         return ResponseEntity.ok(result);
     }
-
 }
