@@ -17,6 +17,13 @@
       <button type="button" class="w3-button w3-round w3-gray" v-on:click="fnList">목록</button>
     </div>
   </div>
+
+  <div style="width: 100%; bottom: 0; position: absolute; height: 25%;">
+    <hr/>
+    <footer>
+      여기는 footer 자리입니다.
+    </footer>
+  </div>
 </template>
 
 <script>

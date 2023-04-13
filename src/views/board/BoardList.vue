@@ -53,6 +53,13 @@
       <button @click="fnPage()" class="w3-button">검색</button>
     </div>
   </div>
+
+  <div style="width: 100%; bottom: 0; position: absolute; height: 25%;">
+    <hr/>
+    <footer>
+      여기는 footer 자리입니다.
+    </footer>
+  </div>
 </template>
 
 <script>

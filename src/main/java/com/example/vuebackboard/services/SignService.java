@@ -27,12 +27,16 @@ public class SignService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public SignEntity create(SignDto signDto) {
-        String encodedPassword = bCryptPasswordEncoder.encode(signDto.getUserPw());
-        SignEntity entity = SignEntity.builder()
-                .userId(signDto.getUserId())
-                .userPw(encodedPassword)
-                .userName(signDto.getUserName())
-                .build();
-        return signRepository.save(entity);
+        try {
+            String encodedPassword = bCryptPasswordEncoder.encode(signDto.getUserPw());
+            SignEntity entity = SignEntity.builder()
+                    .userId(signDto.getUserId())
+                    .userPw(encodedPassword)
+                    .userName(signDto.getUserName())
+                    .build();
+            return signRepository.save(entity);
+        } catch (Exception e) {
+            throw new RuntimeException("회원가입 도중 오류가 발생했습니다.");
+        }
     }
 }

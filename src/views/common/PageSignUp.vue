@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <div>
+  <div style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
+    <Transition name="slide-fade">
+    <div v-if="show">
       <h2>계정 만들기</h2>
       <div id="loginForm">
         <form @submit.prevent="fnSign">
@@ -13,9 +14,9 @@
           <p>
             <input ref="inputpw" name="password" class="w3-input" placeholder="비밀번호를 입력해주세요" v-model="user_pw" type="password">
           </p>
-          <div @click="toggleCheck" style="cursor: default">
+          <div @click="toggleCheck" style="cursor: default; text-align: center; max-width: fit-content; margin: auto;">
             <input type="checkbox" v-model="check">
-            <a href="http://10.1.10.226:8080/about" style="vertical-align: middle;">About</a>
+            <router-link to="/about" style="vertical-align: middle;">About</router-link>
             <span style="vertical-align: middle;">의 내용을 읽고 이용약관에 동의합니다.</span>
           </div>
           <p>
@@ -25,6 +26,14 @@
         </form>
       </div>
     </div>
+    </Transition>
+  </div>
+
+  <div style="width: 100%; bottom: 0; position: absolute; height: 25%;">
+    <hr/>
+    <footer>
+      여기는 footer 자리입니다.
+    </footer>
   </div>
 </template>
 
@@ -36,10 +45,12 @@ export default {
       user_name: '',
       user_id: '',
       user_pw: '',
-      check: false
+      check: false,
+      show: false
     }
   },
   mounted() {
+    this.show = true;
   },
   methods: {
     fnSign() {
@@ -74,22 +85,26 @@ export default {
 
       //INSERT
       this.$axios.post(this.$serverUrl + '/sign/up', this.form)
-          .then((response) => {
-            if (response.status === 200) {
+          .then(() => {
               alert('회원가입이 완료되었습니다.')
-              window.location.reload()
-            } else {
-              alert('회원가입 실패')
-            }
+              window.location.href="http://10.1.10.226:8080/login"
           })
-          .catch((err) => {
-            if (err.message.indexOf('Network Error') > -1) {
-              alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해주세요.')
-            }
+          .catch(() => {
+            alert('회원가입 도중 오류가 발생했습니다.\n' +
+                '다음과 같은 이유로 회원가입을 할수없습니다.\n\n' +
+                '======================================\n\n' +
+                '이미 등록되어 있는 아이디, 이름인 경우\n' +
+                '이름, 아이디, 비밀번호를 너무 길게 입력한 경우\n' +
+                '네트워크가 원활하지 않아 서버에 접속할수 없는 경우')
           })
     },
     toggleCheck() {
       this.check = !this.check;
+    },
+    goToPages() {
+      this.$router.push({
+        name: 'About'
+      })
     }
   }
 }
@@ -97,11 +112,25 @@ export default {
 
 <style>
 #loginForm {
-  width: 500px;
+  width: 450px;
   margin: auto;
 }
 input[type="checkbox"] {
   vertical-align: middle;
   margin-right: 10px;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
 }
 </style>

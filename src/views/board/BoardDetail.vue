@@ -1,28 +1,29 @@
 <template>
-  <div className="board-detail">
+  <Transition duration="550" name="nested">
+  <div className="board-detail" v-if="show" id="outer">
     <div className="board-contents">
-      <h3>{{ title }}</h3>
-      <div>
+      <h3 id="inner">{{ title }}</h3>
+      <div id="inner">
         <strong className="w3-large">{{ author }}</strong>
         <br>
         <span>{{ created_at }}</span>
       </div>
     </div>
     <div className="board-contents">
-      <span>{{ contents }}</span>
+      <div  id="inner"><span>{{ contents }}</span></div>
     </div>
-    <div className="common-buttons">
+    <div className="common-buttons" >
       <button type="button" className="w3-button w3-round w3-blue-gray" v-on:click="fnUpdate">수정</button>&nbsp;
       <button type="button" className="w3-button w3-round w3-red" v-on:click="fnDelete">삭제</button>&nbsp;
       <button type="button" className="w3-button w3-round w3-gray" v-on:click="fnList">목록</button>
     </div>
     <board-comment></board-comment>
   </div>
+  </Transition>
 </template>
 
 <script>
 import BoardComment from "@/views/board/BoardComment.vue";
-
 export default {
   components: {BoardComment},
   data() { //변수생성
@@ -33,10 +34,12 @@ export default {
       title: '',
       author: '',
       contents: '',
-      created_at: ''
+      created_at: '',
+      show: false
     }
   },
   mounted() {
+    this.show = true;
     this.fnGetView()
   },
   methods: {
@@ -82,6 +85,33 @@ export default {
 }
 </script>
 <style scoped>
+.nested-enter-active, .nested-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+/* delay leave of parent element */
+.nested-leave-active {
+  transition-delay: 0.25s;
+}
 
+.nested-enter-from,
+.nested-leave-to {
+  transform: translateY(30px);
+  opacity: 0;
+}
 
+/* we can also transition nested elements using nested selectors */
+.nested-enter-active #inner,
+.nested-leave-active #inner {
+  transition: all 0.3s ease-in-out;
+}
+/* delay enter of nested element */
+.nested-enter-active #inner {
+  transition-delay: 0.25s;
+}
+
+.nested-enter-from #inner,
+.nested-leave-to #inner {
+  transform: translateX(30px);
+  opacity: 0.001;
+}
 </style>
