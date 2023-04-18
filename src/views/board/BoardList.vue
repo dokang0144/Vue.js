@@ -1,5 +1,6 @@
 <template xmlns:white-space="http://www.w3.org/1999/xhtml">
-  <div class="board-list">
+  <Transition>
+  <div class="board-list" v-if="show">
     <div class="common-buttons">
       <button type="button" class="w3-button w3-round w3-blue-gray" v-on:click="fnWrite">등록</button>
     </div>
@@ -53,7 +54,7 @@
       <button @click="fnPage()" class="w3-button">검색</button>
     </div>
   </div>
-
+  </Transition>
   <div style="width: 100%; bottom: 0; position: absolute; height: 25%;">
     <hr/>
     <footer>
@@ -66,6 +67,7 @@
 export default {
   data() { //변수생성
     return {
+      show: false,
       requestBody: {}, //리스트 페이지 데이터전송
       list: {}, //리스트 데이터
       no: '', //게시판 숫자처리
@@ -97,6 +99,7 @@ export default {
   },
   mounted() {
     this.fnGetList()
+    this.show = true;
   },
   methods: {
     fnGetList() {
@@ -162,4 +165,13 @@ export default {
   border-bottom-width: 1px;
 }
 
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 </style>
