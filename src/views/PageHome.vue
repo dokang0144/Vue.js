@@ -2,16 +2,20 @@
   <div className="home">
     <img alt="Vue logo" src="../assets/logo.png" className="logo">
     <HelloWorld msg="웹 게시판에 오신 것을 환영합니다."/>
+    <draggable/>
   </div>
 </template>
 
 <script>
 import HelloWorld from '@/components/HelloWorld.vue';
+import Draggable from './common/PageDraggable.vue';
+
 
 export default {
   name: 'PageHome',
   components: {
-    HelloWorld
+    HelloWorld,
+    Draggable
   }
 };
 </script>
