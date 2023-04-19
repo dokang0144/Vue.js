@@ -1,6 +1,6 @@
 <template>
   <Transition duration="550" name="nested">
-  <div className="board-list">
+  <div className="board-list" style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
     <div style="border-bottom: 2px solid #92D050; height: 50px;" v-if="show" id="outer">
       <p style="float:left; padding: 0 10px 0" id="inner">전체 댓글 <a style="color: dodgerblue;">{{ list.length }}</a>개</p>
     </div>
@@ -8,7 +8,24 @@
     <ul className="w3-ul" v-if="show" id="inner">
       <li v-for="(row, idx) in list" :key="idx" style="border-bottom: 1px solid #D9D9D9">
         <div style="float: left; width: 150px;">{{ row.user_name }}</div>
-        <div>{{ row.comment }}</div>
+        <div style="margin-right: 0; cursor: pointer" @click="toggleReplyForm(row.idx)">{{ row.comment }}</div>
+        <div v-if="row.showReply && clickIdx === row.idx">
+
+          <ul className="w3-ul" v-if="show">
+            <li v-for="(row, idx) in replies" :key="idx" style="border-bottom: 1px solid #D9D9D9">
+              <div style="float: left; width: 150px;">{{ row.user_name }}</div>
+              <div style="margin-right: 0;">{{ row.replies }}</div>
+            </li>
+          </ul>
+
+          <form v-on:submit.prevent="fnReplies" style="text-align: center; padding: 10px">
+          <input ref="repliesInput" v-model="replie" placeholder="대댓글을 남겨주세요."
+                 style="width: 600px; height: 40px; outline: none;" id="textForm"
+                 type="text">
+            <button className="w3-button w3-blue" style="height: 40px" type="submit" id="inner">대댓글쓰기</button>
+          </form>
+
+        </div>
       </li>
     </ul>
     <br>
@@ -26,32 +43,54 @@
 </template>
 
 <script>
+
 export default {
   data() { //변수생성
     return {
       requestBody: {}, //리스트 페이지 데이터전송
       list: {}, //리스트 데이터
+      replies: {}, //댓글 데이터
       no: '', //게시판 숫자처리
       idx: this.$route.query.idx,
+      clickIdx: '',
 
       user_name: '',
       comment: '',
       board: '',
-      show: false
+      show: false,
+
+      replie: '',
+
     }
   },
   mounted() {
     this.show = true;
     this.fnGetList()
+    this.fnGetReplies()
+
   },
   methods: {
-    fnGetList() {
-      this.requestBody = { // 데이터 전송
-        keyword: this.keyword,
-        page: this.page,
-        size: this.size
+    toggleReplyForm(rowIdx) {
+      if (this.clickIdx === rowIdx) {
+        // 이미 선택된 댓글인 경우
+        this.clickIdx = null;
+      } else {
+        // 선택한 댓글이 다른 경우
+        this.clickIdx = rowIdx;
       }
 
+      // 모든 댓글의 showReply 속성을 false로 초기화한 후, 선택된 댓글의 showReply를 true로 변경함
+      this.list.forEach(row => {
+        if (row.idx === rowIdx) {
+          row.showReply = true;
+        } else {
+          row.showReply = false;
+        }
+      });
+
+      this.fnGetReplies();
+    },
+    fnGetList() {
       this.$axios.get(this.$serverUrl + "/comment/list", {
         params: this.requestBody,
         headers: {}
@@ -61,6 +100,14 @@ export default {
         if (err.message.indexOf('Network Error') > -1) {
           alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해주세요.')
         }
+      })
+    },
+    fnGetReplies() {
+      this.$axios.get(this.$serverUrl + "/replies/list", {
+        params: this.requestBody,
+        headers: {}
+      }).then((res) => {
+        this.replies = res.data.filter((comment) => comment.comment == this.clickIdx);
       })
     },
     fnSave() {
@@ -77,6 +124,39 @@ export default {
         "user_name": this.user_name,
         "comment": this.comment,
         "board": this.idx
+      }
+
+      if (!this.user_name) {
+        alert('이름을 입력해주세요.')
+        return
+      }
+
+      //INSERT
+      this.$axios.post(apiUrl, this.form)
+          .then(() => {
+            alert('댓글이 저장되었습니다.')
+            window.location.reload()
+          })
+          .catch((err) => {
+            if (err.message.indexOf('Network Error') > -1) {
+              alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해주세요.')
+            }
+          })
+    },
+    fnReplies() {
+
+      if (!this.replies) {
+        alert('대댓글을 입력해주세요.')
+        this.$refs.repliesInput.focus()
+        return
+      }
+
+      let apiUrl = this.$serverUrl + '/replies'
+      this.user_name = prompt("이름을 입력해주세요.");
+      this.form = {
+        "user_name": this.user_name,
+        "replies": this.replie,
+        "comment": this.clickIdx
       }
 
       if (!this.user_name) {

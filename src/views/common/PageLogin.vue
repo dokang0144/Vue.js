@@ -22,7 +22,7 @@
     </Transition>
   </div>
 
-  <div style="width: 100%; bottom: 0; position: absolute; height: 25%;">
+  <div style="width: 100%; bottom: 0; position: absolute; height: 100px;">
     <hr/>
     <footer>
       여기는 footer 자리입니다.

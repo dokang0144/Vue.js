@@ -1,6 +1,6 @@
 <template xmlns:white-space="http://www.w3.org/1999/xhtml">
   <Transition>
-  <div class="board-list" v-if="show">
+  <div class="board-list" v-if="show" style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
     <div class="common-buttons">
       <button type="button" class="w3-button w3-round w3-blue-gray" v-on:click="fnWrite">등록</button>
     </div>
@@ -161,7 +161,7 @@ export default {
   border-top: 0;
   border-left: 0;
   border-right: 0;
-  border-bottom-color: #2c3e50;
+  border-bottom-color: #CCCCCC;
   border-bottom-width: 1px;
 }
 

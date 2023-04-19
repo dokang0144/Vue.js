@@ -8,10 +8,12 @@
           <p>
             <input ref="inputname" class="w3-input" name="uid" placeholder="이름을 입력해주세요" v-model="user_name"><br>
           </p>
-          <p>
-            <input ref="inputid" class="w3-input" name="uid" placeholder="아이디를 입력해주세요" v-model="user_id"><br>
+          <p style="display: flex; align-items: center">
+            <input ref="inputid" class="w3-input" name="uid" placeholder="아이디를 입력해주세요" v-model="user_id">
+            <button class="w3-button" style="width: 100px; cursor: pointer" @click="checkDuplication">중복확인</button>
           </p>
           <p>
+            <br>
             <input ref="inputpw" name="password" class="w3-input" placeholder="비밀번호를 입력해주세요" v-model="user_pw" type="password">
           </p>
           <div @click="toggleCheck" style="cursor: default; text-align: center; max-width: fit-content; margin: auto;">

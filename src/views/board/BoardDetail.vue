@@ -1,5 +1,5 @@
 <template>
-  <Transition duration="550" name="nested">
+  <Transition duration="550" name="nested" style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
   <div className="board-detail" v-if="show" id="outer">
     <div className="board-contents">
       <h3 id="inner">{{ title }}</h3>
@@ -10,7 +10,7 @@
       </div>
     </div>
     <div className="board-contents">
-      <div  id="inner"><span>{{ contents }}</span></div>
+      <div  id="inner"><span v-html="contents.replace(/\n/g, '<br>')" /></div>
     </div>
     <div className="common-buttons" >
       <button type="button" className="w3-button w3-round w3-blue-gray" v-on:click="fnUpdate">수정</button>&nbsp;
