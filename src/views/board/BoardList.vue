@@ -42,14 +42,14 @@
     </div>
 
     <div>
-      <select v-model="search_key" id="selectForm" class="w3-select">
+      <select v-model="search_key" id="selectForm" class="w3-select" style="background: none; outline: none">
         <option value="">- 선택 -</option>
         <option value="author">작성자</option>
         <option value="title">제목</option>
         <option value="contents">내용</option>
       </select>
       &nbsp;
-      <input id="textForm" type="text" v-model="search_value" @keyup.enter="fnPage()">
+      <input id="textForm" type="text" v-model="search_value" @keyup.enter="fnPage()" style="background: none; outline: none">
       &nbsp;
       <button @click="fnPage()" class="w3-button">검색</button>
     </div>

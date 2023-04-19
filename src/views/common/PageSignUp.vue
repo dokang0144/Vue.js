@@ -6,15 +6,16 @@
       <div id="loginForm">
         <form @submit.prevent="fnSign">
           <p>
-            <input ref="inputname" class="w3-input" name="uid" placeholder="이름을 입력해주세요" v-model="user_name"><br>
+            <input ref="inputname" class="w3-input" name="uid" placeholder="이름을 입력해주세요" v-model="user_name" style="background: none; outline: none"><br>
           </p>
           <p style="display: flex; align-items: center">
-            <input ref="inputid" class="w3-input" name="uid" placeholder="아이디를 입력해주세요" v-model="user_id">
-            <button class="w3-button" style="width: 100px; cursor: pointer" @click="checkDuplication">중복확인</button>
+            <input ref="inputid" class="w3-input" name="uid" placeholder="아이디를 입력해주세요" v-model="user_id" style="background: none; outline: none">
+            <button class="w3-button" style="width: 100px; cursor: pointer" @click="checkDuplication" type="button">중복확인</button>
           </p>
+          <div v-if="isDuplicated" style="color: green; font-weight: bold;">사용가능한 아이디입니다.</div>
+          <div v-if="!isDuplicated" style="color: red; font-weight: bold;">※ 아이디 중복확인을 해주세요.</div>
           <p>
-            <br>
-            <input ref="inputpw" name="password" class="w3-input" placeholder="비밀번호를 입력해주세요" v-model="user_pw" type="password">
+            <input ref="inputpw" name="password" class="w3-input" placeholder="비밀번호를 입력해주세요" v-model="user_pw" type="password" style="background: none; outline: none">
           </p>
           <div @click="toggleCheck" style="cursor: default; text-align: center; max-width: fit-content; margin: auto;">
             <input type="checkbox" v-model="check">
@@ -48,11 +49,17 @@ export default {
       user_id: '',
       user_pw: '',
       check: false,
-      show: false
+      show: false,
+      isDuplicated: false
     }
   },
   mounted() {
     this.show = true;
+  },
+  watch: {
+    user_id() {
+      this.isDuplicated = false;
+    }
   },
   methods: {
     fnSign() {
@@ -85,6 +92,11 @@ export default {
         return
       }
 
+      if (!this.isDuplicated) {
+        alert('아이디 중복확인을 해주세요.')
+        return
+      }
+
       //INSERT
       this.$axios.post(this.$serverUrl + '/sign/up', this.form)
           .then(() => {
@@ -92,12 +104,7 @@ export default {
               window.location.href="http://10.1.10.226:8080/login"
           })
           .catch(() => {
-            alert('회원가입 도중 오류가 발생했습니다.\n' +
-                '다음과 같은 이유로 회원가입을 할수없습니다.\n\n' +
-                '======================================\n\n' +
-                '이미 등록되어 있는 아이디, 이름인 경우\n' +
-                '이름, 아이디, 비밀번호를 너무 길게 입력한 경우\n' +
-                '네트워크가 원활하지 않아 서버에 접속할수 없는 경우')
+            alert('회원가입 도중 오류가 발생했습니다.');
           })
     },
     toggleCheck() {
@@ -107,6 +114,25 @@ export default {
       this.$router.push({
         name: 'About'
       })
+    },
+    checkDuplication() {
+      if (this.user_id === '') {
+        alert('아이디를 입력해주세요.')
+        this.$refs.inputid.focus()
+        return
+      }
+
+      // 중복확인 요청 보내기
+      this.$axios.post(this.$serverUrl + '/sign/check', { user_id: this.user_id })
+          .then((response) => {
+            if (response.data === '사용 가능한 아이디입니다.') {
+
+              this.isDuplicated = true;
+            }
+          })
+          .catch(() => {
+            alert('이미 사용 중인 아이디입니다.')
+          })
     }
   }
 }

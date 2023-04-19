@@ -39,4 +39,9 @@ public class SignService {
             throw new RuntimeException("회원가입 도중 오류가 발생했습니다.");
         }
     }
+
+    public boolean isDuplicatedUserId(String userId) {
+        return signRepository.existsByUserId(userId);
+    }
+
 }

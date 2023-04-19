@@ -1,5 +1,5 @@
 <template>
-  <div style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; position: fixed; height: 100%; width: 100%;" class="center">
+  <div style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; position: fixed; height: 100%; width: 100%; " class="center">
     <Transition name="bounce">
     <div v-if="show" style="margin-top: 20px; text-align: center;">
       <h2>돌아오신 것을 환영해요!</h2>
@@ -10,7 +10,7 @@
             <input class="w3-input" name="uid" placeholder="아이디를 입력해주세요" v-model="user_id"><br>
           </p>
           <p>
-            <input name="password" class="w3-input" placeholder="비밀번호를 입력해주세요" v-model="user_pw" type="password" style="-webkit-text-security: square">
+            <input name="password" class="w3-input" placeholder="비밀번호를 입력해주세요" v-model="user_pw" type="password" style="-webkit-text-security: square;">
           </p>
           <p>
             <button type="submit" class="w3-button w3-green w3-round">Login</button>
@@ -22,7 +22,7 @@
     </Transition>
   </div>
 
-  <div style="width: 100%; bottom: 0; position: absolute; height: 100px;">
+  <div style="width: 100%; bottom: 0; position: absolute; height: 25%;">
     <hr/>
     <footer>
       여기는 footer 자리입니다.

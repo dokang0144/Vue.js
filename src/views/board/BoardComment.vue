@@ -6,25 +6,22 @@
     </div>
 
     <ul className="w3-ul" v-if="show" id="inner">
-      <li v-for="(row, idx) in list" :key="idx" style="border-bottom: 1px solid #D9D9D9">
+      <li v-for="(row, idx) in list" :key="idx" style="border-bottom: 2px solid #D9D9D9;">
         <div style="float: left; width: 150px;">{{ row.user_name }}</div>
         <div style="margin-right: 0; cursor: pointer" @click="toggleReplyForm(row.idx)">{{ row.comment }}</div>
-        <div v-if="row.showReply && clickIdx === row.idx">
-
-          <ul className="w3-ul" v-if="show">
-            <li v-for="(row, idx) in replies" :key="idx" style="border-bottom: 1px solid #D9D9D9">
-              <div style="float: left; width: 150px;">{{ row.user_name }}</div>
-              <div style="margin-right: 0;">{{ row.replies }}</div>
-            </li>
-          </ul>
-
-          <form v-on:submit.prevent="fnReplies" style="text-align: center; padding: 10px">
+        <ul className="w3-ul">
+          <li v-for="(reply, idx) in replies.filter(item => item.comment === row.idx)" :key="idx" style="border-bottom: 1px solid #D9D9D9; width: 600px; margin: 0 20px">
+            <div style="float: left; width: 150px;">{{ reply.user_name }}</div>
+            <div style="margin-right: 0;">{{ reply.replies }}</div>
+          </li>
+        </ul><p v-if="replies.filter(item => item.comment === row.idx).length >= 1" style="font-size: 5px"> </p>
+        <div v-if="clickIdx === row.idx">
+          <form v-on:submit.prevent="fnReplies" style="text-align: center; padding: 5px 0;">
           <input ref="repliesInput" v-model="replie" placeholder="대댓글을 남겨주세요."
-                 style="width: 600px; height: 40px; outline: none;" id="textForm"
+                 style="width: 620px; height: 40px; outline: none;" id="textForm"
                  type="text">
             <button className="w3-button w3-blue" style="height: 40px" type="submit" id="inner">대댓글쓰기</button>
           </form>
-
         </div>
       </li>
     </ul>
@@ -70,6 +67,7 @@ export default {
 
   },
   methods: {
+
     toggleReplyForm(rowIdx) {
       if (this.clickIdx === rowIdx) {
         // 이미 선택된 댓글인 경우
@@ -79,16 +77,14 @@ export default {
         this.clickIdx = rowIdx;
       }
 
-      // 모든 댓글의 showReply 속성을 false로 초기화한 후, 선택된 댓글의 showReply를 true로 변경함
+      // 선택된 댓글의 showReply를 반전시킴
       this.list.forEach(row => {
         if (row.idx === rowIdx) {
-          row.showReply = true;
+          row.showReply = !row.showReply;
         } else {
           row.showReply = false;
         }
       });
-
-      this.fnGetReplies();
     },
     fnGetList() {
       this.$axios.get(this.$serverUrl + "/comment/list", {
@@ -107,7 +103,7 @@ export default {
         params: this.requestBody,
         headers: {}
       }).then((res) => {
-        this.replies = res.data.filter((comment) => comment.comment == this.clickIdx);
+        this.replies = res.data
       })
     },
     fnSave() {
