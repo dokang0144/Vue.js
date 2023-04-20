@@ -6,7 +6,7 @@
     </div>
     <div class="board-contents">
       <input type="text" ref="titleInput" v-model="title" class="w3-input w3-border" placeholder="제목을 입력해주세요.">
-      <input type="text" v-model="author" class="w3-input w3-border" placeholder="작성자를 입력해주세요." v-if="idx === undefined">
+      <input type="text" v-model="author" class="w3-input w3-border" placeholder="작성자를 입력해주세요." disabled>
     </div>
     <div class="board-contents">
       <textarea id="" cols="30" rows="10" v-model="contents" class="w3-input w3-border" style="resize: none;">
@@ -27,7 +27,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
+  ...mapGetters(['getUser']),
+  author() {
+    return this.getUser.name // 작성자 필드에 사용자 이름 할당
+  },
   data() { //변수생성
     return {
       requestBody: this.$route.query,
@@ -36,10 +42,14 @@ export default {
       title: '',
       author: '',
       contents: '',
-      created_at: ''
+      created_at: '',
+
+      user_name: ''
     }
   },
   mounted() {
+    this.user_name = localStorage.getItem('userName')
+    this.author = this.user_name
     this.fnGetView()
   },
   methods: {

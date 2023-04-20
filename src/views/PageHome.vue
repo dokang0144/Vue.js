@@ -1,9 +1,10 @@
 <template>
-  <div className="home">
+  <div className="home" style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
     <img alt="Vue logo" src="../assets/logo.png" className="logo">
     <HelloWorld msg="웹 게시판에 오신 것을 환영합니다."/>
     <draggable/>
   </div>
+
 </template>
 
 <script>

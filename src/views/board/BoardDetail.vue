@@ -18,12 +18,20 @@
       <button type="button" className="w3-button w3-round w3-gray" v-on:click="fnList">목록</button>
     </div>
     <board-comment></board-comment>
+
+    <div style="width: 100%;">
+      <hr/>
+      <footer>
+        <img src="../../assets/footer.png" style="height: 200px"><img src="../../assets/footer2.png" style="height: 200px">
+      </footer>
+    </div>
   </div>
   </Transition>
 </template>
 
 <script>
 import BoardComment from "@/views/board/BoardComment.vue";
+
 export default {
   components: {BoardComment},
   data() { //변수생성
