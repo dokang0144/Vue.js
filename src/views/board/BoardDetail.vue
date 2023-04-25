@@ -12,9 +12,12 @@
     <div className="board-contents">
       <div  id="inner"><span v-html="contents.replace(/\n/g, '<br>')" /></div>
     </div>
-    <div className="common-buttons" >
+    <div className="common-buttons" v-if="author === logId.userId || logId.userId === admin">
       <button type="button" className="w3-button w3-round w3-blue-gray" v-on:click="fnUpdate">수정</button>&nbsp;
       <button type="button" className="w3-button w3-round w3-red" v-on:click="fnDelete">삭제</button>&nbsp;
+      <button type="button" className="w3-button w3-round w3-gray" v-on:click="fnList">목록</button>
+    </div>
+    <div className="common-buttons" v-else>
       <button type="button" className="w3-button w3-round w3-gray" v-on:click="fnList">목록</button>
     </div>
     <board-comment></board-comment>
@@ -31,6 +34,7 @@
 
 <script>
 import BoardComment from "@/views/board/BoardComment.vue";
+import jwt_decode from "jwt-decode";
 
 export default {
   components: {BoardComment},
@@ -38,12 +42,14 @@ export default {
     return {
       requestBody: this.$route.query,
       idx: this.$route.query.idx,
+      admin: 'admin',
 
       title: '',
       author: '',
       contents: '',
       created_at: '',
-      show: false
+      show: false,
+      logId: ''
     }
   },
   mounted() {
@@ -89,7 +95,14 @@ export default {
         console.log(err);
       })
     }
-  }
+  },
+  created() {
+    const token = localStorage.getItem("user_token");
+    if (token) {
+      const decoded = jwt_decode(token);
+      this.logId = decoded;
+    }
+  },
 }
 </script>
 <style scoped>
