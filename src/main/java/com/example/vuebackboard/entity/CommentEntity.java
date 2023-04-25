@@ -6,19 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name="comment")
+@Table(name="COMMENT")
 @Entity
 public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long c_idx;
     private Long idx;
-    private String user_id;
+    private String userName;
     private String comment;
+    private Long board;
 }

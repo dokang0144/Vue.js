@@ -1,27 +1,40 @@
 <template>
-  <div className="board-detail">
+  <Transition duration="550" name="nested" style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
+  <div className="board-detail" v-if="show" id="outer">
     <div className="board-contents">
-      <h3>{{ title }}</h3>
-      <div>
+      <h3 id="inner">{{ title }}</h3>
+      <div id="inner">
         <strong className="w3-large">{{ author }}</strong>
         <br>
         <span>{{ created_at }}</span>
       </div>
     </div>
     <div className="board-contents">
-      <span>{{ contents }}</span>
+      <div  id="inner"><span v-html="contents.replace(/\n/g, '<br>')" /></div>
     </div>
-    <div className="common-buttons">
+    <div className="common-buttons" v-if="author === logId.userId || logId.userId === admin">
       <button type="button" className="w3-button w3-round w3-blue-gray" v-on:click="fnUpdate">수정</button>&nbsp;
       <button type="button" className="w3-button w3-round w3-red" v-on:click="fnDelete">삭제</button>&nbsp;
       <button type="button" className="w3-button w3-round w3-gray" v-on:click="fnList">목록</button>
     </div>
+    <div className="common-buttons" v-else>
+      <button type="button" className="w3-button w3-round w3-gray" v-on:click="fnList">목록</button>
+    </div>
     <board-comment></board-comment>
+
+    <div style="width: 100%;">
+      <hr/>
+      <footer>
+        <img src="../../assets/footer.png" style="height: 200px"><img src="../../assets/footer2.png" style="height: 200px">
+      </footer>
+    </div>
   </div>
+  </Transition>
 </template>
 
 <script>
 import BoardComment from "@/views/board/BoardComment.vue";
+import jwt_decode from "jwt-decode";
 
 export default {
   components: {BoardComment},
@@ -29,14 +42,18 @@ export default {
     return {
       requestBody: this.$route.query,
       idx: this.$route.query.idx,
+      admin: 'admin',
 
       title: '',
       author: '',
       contents: '',
-      created_at: ''
+      created_at: '',
+      show: false,
+      logId: ''
     }
   },
   mounted() {
+    this.show = true;
     this.fnGetView()
   },
   methods: {
@@ -78,10 +95,44 @@ export default {
         console.log(err);
       })
     }
-  }
+  },
+  created() {
+    const token = localStorage.getItem("user_token");
+    if (token) {
+      const decoded = jwt_decode(token);
+      this.logId = decoded;
+    }
+  },
 }
 </script>
 <style scoped>
+.nested-enter-active, .nested-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+/* delay leave of parent element */
+.nested-leave-active {
+  transition-delay: 0.25s;
+}
 
+.nested-enter-from,
+.nested-leave-to {
+  transform: translateY(30px);
+  opacity: 0;
+}
 
+/* we can also transition nested elements using nested selectors */
+.nested-enter-active #inner,
+.nested-leave-active #inner {
+  transition: all 0.3s ease-in-out;
+}
+/* delay enter of nested element */
+.nested-enter-active #inner {
+  transition-delay: 0.25s;
+}
+
+.nested-enter-from #inner,
+.nested-leave-to #inner {
+  transform: translateX(30px);
+  opacity: 0.001;
+}
 </style>

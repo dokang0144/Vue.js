@@ -1,15 +1,21 @@
 package com.example.vuebackboard.web;
 
+import com.example.vuebackboard.entity.UserEntity;
+import com.example.vuebackboard.entity.UserRepository;
 import com.example.vuebackboard.services.UserService;
 import com.example.vuebackboard.util.JwtUtil;
+import com.example.vuebackboard.web.dtos.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -21,9 +27,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
     private final JwtUtil jwtUtil;
+
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
+
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> paramMap) {
@@ -47,4 +61,6 @@ public class UserController {
 
         return ResponseEntity.ok(result);
     }
+
+
 }

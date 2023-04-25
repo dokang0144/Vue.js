@@ -1,5 +1,6 @@
 <template xmlns:white-space="http://www.w3.org/1999/xhtml">
-  <div class="board-list">
+  <Transition>
+  <div class="board-list" v-if="show" style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
     <div class="common-buttons">
       <button type="button" class="w3-button w3-round w3-blue-gray" v-on:click="fnWrite">등록</button>
     </div>
@@ -41,24 +42,34 @@
     </div>
 
     <div>
-      <select v-model="search_key" id="selectForm" class="w3-select">
+      <select v-model="search_key" id="selectForm" class="w3-select" style="background: none; outline: none">
         <option value="">- 선택 -</option>
         <option value="author">작성자</option>
         <option value="title">제목</option>
         <option value="contents">내용</option>
       </select>
       &nbsp;
-      <input id="textForm" type="text" v-model="search_value" @keyup.enter="fnPage()">
+      <input id="textForm" type="text" v-model="search_value" @keyup.enter="fnPage()" style="background: none; outline: none">
       &nbsp;
       <button @click="fnPage()" class="w3-button">검색</button>
     </div>
+
+    <div style="width: 100%;">
+      <hr/>
+      <footer>
+        <img src="../../assets/footer.png" style="height: 200px"><img src="../../assets/footer2.png" style="height: 200px">
+      </footer>
+    </div>
   </div>
+  </Transition>
 </template>
+
 
 <script>
 export default {
   data() { //변수생성
     return {
+      show: false,
       requestBody: {}, //리스트 페이지 데이터전송
       list: {}, //리스트 데이터
       no: '', //게시판 숫자처리
@@ -90,6 +101,7 @@ export default {
   },
   mounted() {
     this.fnGetList()
+    this.show = true;
   },
   methods: {
     fnGetList() {
@@ -151,8 +163,17 @@ export default {
   border-top: 0;
   border-left: 0;
   border-right: 0;
-  border-bottom-color: #2c3e50;
+  border-bottom-color: #CCCCCC;
   border-bottom-width: 1px;
 }
 
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 </style>

@@ -1,12 +1,16 @@
 <template>
-  <hr/>
-  <footer>
-    여기는 footer 자리입니다.
-  </footer>
+  <div style="width: 100%;height: 25%;">
+    <hr/>
+    <footer>
+      <img src="../assets/footer.png" style="height: 200px"><img src="../assets/footer2.png" style="height: 200px">
+    </footer>
+  </div>
 </template>
 
 <script>
-export default {}
+export default {
+  name: "PageFooter"
+}
 </script>
 
 <style scoped>

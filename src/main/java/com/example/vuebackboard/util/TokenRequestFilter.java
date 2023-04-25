@@ -29,12 +29,12 @@ public class TokenRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            if ("/user/login".equals(request.getRequestURI())) {
-                doFilter(request, response, filterChain);
-            } else {
+            String requestUri = request.getRequestURI();
+            if (!requestUri.equals("/sign/up")) {
                 String token = parseJwt(request);
                 if (token == null) {
                     response.sendError(403);    //accessDenied
+                    return;
                 } else {
                     DecodedJWT tokenInfo = jwtUtil.decodeToken(token);
                     if (tokenInfo != null) {
@@ -46,13 +46,12 @@ public class TokenRequestFilter extends OncePerRequestFilter {
 
                         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                         SecurityContextHolder.getContext().setAuthentication(authentication);
-                        doFilter(request, response, filterChain);
-
                     } else {
                         log.error("### TokenInfo is Null");
                     }
                 }
             }
+            filterChain.doFilter(request, response);
         } catch (Exception e) {
             log.error("### Filter Exception {}", e.getMessage());
         }
